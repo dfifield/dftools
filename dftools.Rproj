@@ -19,3 +19,4 @@ StripTrailingWhitespace: Yes
 BuildType: Package
 PackageUseDevtools: Yes
 PackageInstallArgs: --no-multiarch --with-keep.source --library="E:/Documents/Offline/R/Rlibs"
+PackageRoxygenize: rd,collate,namespace
