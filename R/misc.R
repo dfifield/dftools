@@ -8,6 +8,7 @@ create_project_folders <- function() {
     "Results",
     "GIS/Shapefiles",
     "GIS/Maps",
+    "GIS/Rasters",
     "Data/Raw",
     "Data/Generated",
     "Literature",
