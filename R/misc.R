@@ -70,8 +70,6 @@ setup_project <- function(create.folders = TRUE,
 }
 
 
-#
-#
 
 #' Plot an sf object on a world map
 #'
@@ -131,3 +129,43 @@ plot_sf <- function(dat, xcol = NULL, ycol = NULL, proj = 4326, title = NULL) {
   invisible(g)
 }
 
+#' Pick a custom Albers Equal Area projection suitable for given dataset
+#'
+#' @param dat object with latitudes in \code{latcol} and longitudes in \code{longcol}.
+#' @param latcol  name of \code{dat} column containing latitudes
+#' @param longcol  name of \code{dat} column containing longitudes
+#'
+#'
+#'@details Figures out what standard parallels to use for Albers Equal Area projection.
+#' As per: \href{https://pro.arcgis.com/en/pro-app/latest/help/mapping/properties/albers.htm}{https://pro.arcgis.com/en/pro-app/latest/help/mapping/properties/albers.htm}
+#' See also: \href{https://proj.org/en/6.2/operations/projections/aea.html}{https://proj.org/en/6.2/operations/projections/aea.html}
+#'
+#' Parameters for Albers Equal Area projection:\cr
+#' lat_1: southern standard parallel - 1/6 of latitude range north of the southern limit\cr
+#' lat_2: northern standard parallel - 1/6 of latitude range south of the northern limit\cr
+#' lat_0: central parallel - midpoint of latitude range\cr
+#' lon_0: central meridian - mean of longitude range (or maybe median?)\cr
+#'
+#' @returns The PROJ4 string.
+#' @export
+#'
+#' @author Dave Fifield
+pick_aea_projection <- function(dat, latcol = NULL, longcol = NULL){
+
+  y_range <- (abs(range(dat[, latcol])[1] - range(dat[, latcol])[2]))
+  lat_1 <- min(dat[, latcol]) + y_range/6
+  lat_2 <- max(dat[, latcol]) - y_range/6
+  lat_0 <- mean(range(dat[, latcol]))
+  lon_0 <- mean(range(dat[, longcol]))
+
+  # Create projection object
+  prjstring <-  sprintf(
+    "+proj=aea +lat_1=%g +lat_2=%g +lat_0=%g +lon_0=%g +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+    lat_1,
+    lat_2,
+    lat_0,
+    lon_0
+  )
+
+  prjstring
+}
