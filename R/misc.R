@@ -170,3 +170,12 @@ pick_aea_projection <- function(dat, latcol = NULL, longcol = NULL){
 
   prjstring
 }
+
+is_odd <- function(num) {
+  !((num %% 2) == 0)
+}
+
+is_even <- function(num) {
+  ((num %% 2) == 0)
+}
+
