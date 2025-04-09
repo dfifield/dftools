@@ -96,7 +96,7 @@ setup_project <- function(create.folders = TRUE,
 #' @export
 #'
 #' @author Dave Fifield
-plot_sf <- function(dat, xcol = NULL, ycol = NULL, proj = 4326, title = NULL) {
+plot_sf_obj <- function(dat, xcol = NULL, ycol = NULL, proj = 4326, title = NULL) {
 
   # Make sure dat is sf
   if(!inherits(dat, "sf")) {
