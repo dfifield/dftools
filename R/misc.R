@@ -171,15 +171,38 @@ pick_aea_projection <- function(dat, latcol = NULL, longcol = NULL){
   prjstring
 }
 
+
+#' Tell if a number is odd.
+#'
+#' @param num Number to check
+#'
+#' @returns \code{TRUE} if \code{num} is odd, \code{FALSE} otherwise.
+#' @export
+#'@author Dave Fifield
 is_odd <- function(num) {
   !((num %% 2) == 0)
 }
 
+#' Tell if a number is even
+#'
+#' @param num Number to check
+#'
+#' @returns \code{TRUE} if \code{num} is even, \code{FALSE} otherwise.
+#' @export
+#'@author Dave Fifield
 is_even <- function(num) {
   ((num %% 2) == 0)
 }
 
 
-namesort <- function(dat) {
-  names(dat) %>% sort
+#' Return sorted names of an object
+#'
+#' @param obj Object to get names of
+#'
+#' @returns Sorted vector of object names.
+#' @export
+#'
+#'@author Dave Fifield
+namesort <- function(obj) {
+  names(obj) %>% sort
 }
