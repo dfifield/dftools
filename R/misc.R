@@ -179,3 +179,7 @@ is_even <- function(num) {
   ((num %% 2) == 0)
 }
 
+
+namesort <- function(dat) {
+  names(dat) %>% sort
+}
