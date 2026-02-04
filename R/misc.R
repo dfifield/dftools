@@ -130,12 +130,15 @@ plot_sf_obj <- function(dat, xcol = NULL, ycol = NULL, proj = 4326, title = NULL
   invisible(g)
 }
 
+
 #' Pick a custom Albers Equal Area projection suitable for given dataset
 #'
 #' @param dat object with latitudes in \code{latcol} and longitudes in \code{longcol}.
 #' @param latcol  name of \code{dat} column containing latitudes
 #' @param longcol  name of \code{dat} column containing longitudes
-#'
+#' @param units units for the projection. Choices are "m", "km", or "kmi" for
+#'  meters, kilometers,  and international nautical miles respectively
+#' @param type type of formatting for the returned projection string
 #'
 #'@details Figures out what standard parallels to use for Albers Equal Area projection.
 #' As per: \href{https://pro.arcgis.com/en/pro-app/latest/help/mapping/properties/albers.htm}{https://pro.arcgis.com/en/pro-app/latest/help/mapping/properties/albers.htm}
@@ -147,12 +150,18 @@ plot_sf_obj <- function(dat, xcol = NULL, ycol = NULL, proj = 4326, title = NULL
 #' lat_0: central parallel - midpoint of latitude range\cr
 #' lon_0: central meridian - mean of longitude range (or maybe median?)\cr
 #'
-#' @returns The PROJ4 string.
+#' @returns The projection description string in the chosen format.
 #' @export
 #'
-#' @author Dave Fifield
-pick_aea_projection <- function(dat, latcol = NULL, longcol = NULL){
-
+pick_aea_projection <- function(dat,
+                                latcol = "lat",
+                                longcol = "lon",
+                                units = c("m", "km", "kmi"),
+                                type = c("PROJ4", "WKT2")
+                                ) {
+  units <- match.arg(units)
+  type <- match.arg(type)
+  dat <- sf::st_drop_geometry(dat)
   y_range <- (abs(range(dat[, latcol])[1] - range(dat[, latcol])[2]))
   lat_1 <- min(dat[, latcol]) + y_range/6
   lat_2 <- max(dat[, latcol]) - y_range/6
@@ -161,14 +170,20 @@ pick_aea_projection <- function(dat, latcol = NULL, longcol = NULL){
 
   # Create projection object
   prjstring <-  sprintf(
-    "+proj=aea +lat_1=%g +lat_2=%g +lat_0=%g +lon_0=%g +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+    "+proj=aea +lat_1=%g +lat_2=%g +lat_0=%g +lon_0=%g +x_0=0 +y_0=0 +datum=WGS84 +units=%s +no_defs",
     lat_1,
     lat_2,
     lat_0,
-    lon_0
+    lon_0,
+    units
   )
 
-  prjstring
+  # Return projection in chosen format.
+  if( type == "PROJ4") {
+    prjstring
+  } else {
+    sf::st_crs(prjstring)$wkt
+  }
 }
 
 

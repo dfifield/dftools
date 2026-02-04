@@ -4,7 +4,13 @@
 \alias{pick_aea_projection}
 \title{Pick a custom Albers Equal Area projection suitable for given dataset}
 \usage{
-pick_aea_projection(dat, latcol = NULL, longcol = NULL)
+pick_aea_projection(
+  dat,
+  latcol = "lat",
+  longcol = "lon",
+  units = c("m", "km", "kmi"),
+  type = c("PROJ4", "WKT2")
+)
 }
 \arguments{
 \item{dat}{object with latitudes in \code{latcol} and longitudes in \code{longcol}.}
@@ -12,9 +18,14 @@ pick_aea_projection(dat, latcol = NULL, longcol = NULL)
 \item{latcol}{name of \code{dat} column containing latitudes}
 
 \item{longcol}{name of \code{dat} column containing longitudes}
+
+\item{units}{units for the projection. Choices are "m", "km", or "kmi" for
+meters, kilometers,  and international nautical miles respectively}
+
+\item{type}{type of formatting for the returned projection string}
 }
 \value{
-The PROJ4 string.
+The projection description string in the chosen format.
 }
 \description{
 Pick a custom Albers Equal Area projection suitable for given dataset
@@ -29,7 +40,4 @@ lat_1: southern standard parallel - 1/6 of latitude range north of the southern 
 lat_2: northern standard parallel - 1/6 of latitude range south of the northern limit\cr
 lat_0: central parallel - midpoint of latitude range\cr
 lon_0: central meridian - mean of longitude range (or maybe median?)\cr
-}
-\author{
-Dave Fifield
 }
