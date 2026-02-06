@@ -170,7 +170,7 @@ pick_aea_projection <- function(dat,
 
   # Create projection object
   prjstring <-  sprintf(
-    "+proj=aea +lat_1=%g +lat_2=%g +lat_0=%g +lon_0=%g +x_0=0 +y_0=0 +datum=WGS84 +units=%s +no_defs",
+    "+proj=aea +lat_1=%g +lat_2=%g +lat_0=%g +lon_0=%g +x_0=0 +y_0=0 +ellps=WGS84 +units=%s +no_defs",
     lat_1,
     lat_2,
     lat_0,
